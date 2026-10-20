@@ -1,5 +1,5 @@
 use gpui_kit::prelude::*;
-use gpui_kit::{App, Context, EventEmitter, IntoElement, Render, Window, div};
+use gpui_kit::{Context, EventEmitter, IntoElement, Render, Window, div};
 use gpui_transit::{ResultRouteConfig, ResultSender, StackNavigator};
 
 #[derive(Clone, PartialEq, Eq, Hash, Debug)]
@@ -10,7 +10,7 @@ impl ResultRouteConfig for PickerRoute {
 }
 
 struct PickerScreen {
-    sender: ResultSender<String>,
+    _sender: ResultSender<String>,
 }
 
 impl Render for PickerScreen {
@@ -32,10 +32,9 @@ impl Render for RootHost {
     }
 }
 
-#[tokio::test]
-async fn test_push_for_result_success() {
-    let app = App::headless();
-    app.run(|cx| {
+#[test]
+fn test_push_for_result_success() {
+    gpui_kit::application().run(|cx| {
         let parent = cx.new(|_| RootHost);
         parent.update(cx, |_host, cx| {
             let mut stack = StackNavigator::new_empty();
@@ -46,14 +45,15 @@ async fn test_push_for_result_success() {
                 |_route, mut sender, _cx| {
                     // Send result
                     let _ = sender.send("Selected Item 42".to_string());
-                    PickerScreen { sender }
+                    PickerScreen { _sender: sender }
                 },
                 |_p, _c, _e: &EmptyOutput, _cx| {},
             );
 
             // Channel should have received the value
-            let val = rx.now_or_never().expect("Should be ready immediately");
-            assert_eq!(val, Ok("Selected Item 42".to_string()));
+            let val = rx.blocking_recv().expect("Should receive result value");
+            assert_eq!(val, "Selected Item 42");
         });
+        cx.quit();
     });
 }

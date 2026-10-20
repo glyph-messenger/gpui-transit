@@ -1,5 +1,5 @@
 use gpui_kit::prelude::*;
-use gpui_kit::{App, Context, IntoElement, Render, Window, div};
+use gpui_kit::{Context, IntoElement, Render, Window, WindowOptions, div};
 use gpui_transit::{NavigationFlow, NavigationNode, StackNavigator};
 
 #[derive(Clone, PartialEq, Eq, Hash, Debug)]
@@ -26,33 +26,36 @@ impl Render for RootHost {
 
 #[test]
 fn test_navigation_tree_node_bubbling() {
-    let app = App::headless();
-    app.run(|cx| {
-        let parent = cx.new(|_| RootHost);
-        parent.update(cx, |_host, cx| {
-            let mut stack: StackNavigator<SubRoute, DummyScreen> = StackNavigator::new_empty();
+    gpui_kit::application().run(|cx| {
+        let _ = cx.open_window(WindowOptions::default(), |window, cx| {
+            let parent = cx.new(|_| RootHost);
+            parent.update(cx, |_host, cx| {
+                let mut stack: StackNavigator<SubRoute, DummyScreen> = StackNavigator::new_empty();
 
-            // Empty stack -> BubbleUp
-            assert!(!stack.can_pop());
+                // Empty stack -> BubbleUp
+                assert!(!stack.can_pop());
 
-            // Push First -> len 1 -> can_pop is false (cannot pop root)
-            stack.push_simple(SubRoute::First, cx, |_r, _cx| DummyScreen);
-            assert!(!stack.can_pop());
+                // Push First -> len 1 -> can_pop is false (cannot pop root)
+                stack.push_simple(SubRoute::First, cx, |_r, _cx| DummyScreen);
+                assert!(!stack.can_pop());
 
-            // Push Second -> len 2 -> can_pop is true
-            stack.push_simple(SubRoute::Second, cx, |_r, _cx| DummyScreen);
-            assert!(stack.can_pop());
+                // Push Second -> len 2 -> can_pop is true
+                stack.push_simple(SubRoute::Second, cx, |_r, _cx| DummyScreen);
+                assert!(stack.can_pop());
 
-            // Pop Second -> Handled
-            let window_stub = unsafe { &mut *(1 as *mut Window) }; // Not dereferenced in test
-            let flow = stack.handle_pop(window_stub, cx);
-            assert_eq!(flow, NavigationFlow::Handled);
-            assert_eq!(stack.len(), 1);
+                // Pop Second -> Handled
+                let flow = stack.handle_pop(window, cx);
+                assert_eq!(flow, NavigationFlow::Handled);
+                assert_eq!(stack.len(), 1);
 
-            // Pop at root -> BubbleUp
-            let flow2 = stack.handle_pop(window_stub, cx);
-            assert_eq!(flow2, NavigationFlow::BubbleUp);
-            assert_eq!(stack.len(), 1);
+                // Pop at root -> BubbleUp
+                let flow2 = stack.handle_pop(window, cx);
+                assert_eq!(flow2, NavigationFlow::BubbleUp);
+                assert_eq!(stack.len(), 1);
+            });
+
+            cx.quit();
+            cx.new(|_| RootHost)
         });
     });
 }

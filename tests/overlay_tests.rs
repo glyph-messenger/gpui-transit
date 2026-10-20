@@ -1,6 +1,6 @@
 use gpui_kit::prelude::*;
-use gpui_kit::{App, Context, EventEmitter, IntoElement, Render, Window, div};
-use gpui_transit::{OverlayKind, OverlayNavigator, RouteConfig};
+use gpui_kit::{Context, EventEmitter, IntoElement, Render, Window, div};
+use gpui_transit::{OverlayKind, OverlayNavigator};
 
 #[derive(Clone, PartialEq, Eq, Hash, Debug)]
 enum ModalRoute {
@@ -34,8 +34,7 @@ impl Render for RootHost {
 
 #[test]
 fn test_overlay_navigator_presentation_and_kinds() {
-    let app = App::headless();
-    app.run(|cx| {
+    gpui_kit::application().run(|cx| {
         let parent = cx.new(|_| RootHost);
         parent.update(cx, |_host, cx| {
             let mut overlay: OverlayNavigator<ModalRoute, ModalScreen> = OverlayNavigator::new();
@@ -95,5 +94,6 @@ fn test_overlay_navigator_presentation_and_kinds() {
             assert!(!overlay.is_presented());
             assert_eq!(overlay.len(), 0);
         });
+        cx.quit();
     });
 }

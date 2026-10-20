@@ -117,6 +117,48 @@ impl<C: RouteConfig, V: Render + 'static> OverlayNavigator<C, V> {
         }
     }
 
+    /// Presents a modal dialog with `Window` access.
+    pub fn present_in<P: 'static, O: 'static>(
+        &mut self,
+        config: C,
+        window: &mut Window,
+        cx: &mut Context<P>,
+        factory: impl FnOnce(&C, &mut Window, &mut Context<V>) -> V,
+        mut on_output: impl FnMut(&mut P, Entity<V>, &O, &mut Context<P>) + 'static,
+    ) where
+        V: EventEmitter<O>,
+    {
+        let entity = cx.new(|cx| factory(&config, window, cx));
+        let subscription = cx.subscribe(&entity, move |parent, child, event: &O, cx| {
+            on_output(parent, child, event, cx);
+        });
+
+        self.entries.push(NavEntry::new(config, entity, Some(subscription)));
+        self.overlay_kinds.push(OverlayKind::ModalDialog);
+        cx.notify();
+    }
+
+    /// Presents a modal dialog with `Window` access and transfers keyboard focus.
+    pub fn present_and_focus_in<P: 'static, O: 'static>(
+        &mut self,
+        config: C,
+        window: &mut Window,
+        cx: &mut Context<P>,
+        factory: impl FnOnce(&C, &mut Window, &mut Context<V>) -> V,
+        on_output: impl FnMut(&mut P, Entity<V>, &O, &mut Context<P>) + 'static,
+    ) where
+        V: EventEmitter<O> + NavFocusable,
+    {
+        self.focus_stack.push_current(window, cx);
+        self.present_in(config, window, cx, factory, on_output);
+
+        if let Some(top) = self.entries.last()
+            && let Some(handle) = top.entity.read(cx).focus_handle(cx)
+        {
+            window.focus(&handle, cx);
+        }
+    }
+
     /// Dismisses the top-most modal overlay.
     pub fn dismiss_top<P: 'static>(&mut self, cx: &mut Context<P>) -> bool {
         if let Some(mut popped) = self.entries.pop() {

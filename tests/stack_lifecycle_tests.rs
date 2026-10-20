@@ -1,12 +1,11 @@
 use gpui_kit::prelude::*;
-use gpui_kit::{App, Context, EventEmitter, IntoElement, Render, Window, div};
-use gpui_transit::{RouteConfig, StackNavigator};
+use gpui_kit::{Context, EventEmitter, IntoElement, Render, Window, div};
+use gpui_transit::StackNavigator;
 
 #[derive(Clone, PartialEq, Eq, Hash, Debug)]
 enum TestRoute {
     Home,
     Detail(u32),
-    Settings,
 }
 
 struct TestScreen {
@@ -20,7 +19,7 @@ impl Render for TestScreen {
 }
 
 #[derive(Clone, Debug)]
-struct TestOutput(String);
+struct TestOutput;
 
 impl EventEmitter<TestOutput> for TestScreen {}
 
@@ -34,8 +33,7 @@ impl Render for RootHost {
 
 #[test]
 fn test_stack_basic_logic() {
-    let app = App::headless();
-    app.run(|cx| {
+    gpui_kit::application().run(|cx| {
         let parent = cx.new(|_| RootHost);
         parent.update(cx, |_host, cx| {
             let mut stack: StackNavigator<TestRoute, TestScreen> = StackNavigator::new_empty();
@@ -83,5 +81,6 @@ fn test_stack_basic_logic() {
             assert_eq!(stack.current_config(), Some(&TestRoute::Home));
             assert!(!stack.can_go_back());
         });
+        cx.quit();
     });
 }
