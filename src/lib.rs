@@ -28,6 +28,7 @@ pub mod transitions;
 pub mod tree;
 
 pub use actions::{DismissOverlay, NavigateBack, NavigateForward, NavigateHome};
+pub use gpui;
 pub use context::NavContext;
 pub use focus::{FocusStack, NavFocusable, WindowFocusExt};
 pub use guard::{GuardDecision, NavGuard, NavInterceptor};

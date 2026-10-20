@@ -35,8 +35,8 @@ macro_rules! define_route_host {
         $vis enum $host_name {
             $(
                 $variant {
-                    entity: ::gpui::Entity<$screen>,
-                    _subscription: ::gpui::Subscription,
+                    entity: $crate::gpui::Entity<$screen>,
+                    _subscription: $crate::gpui::Subscription,
                 },
             )*
         }
@@ -46,8 +46,8 @@ macro_rules! define_route_host {
             $(
                 /// Creates a new variant embedding the child screen and subscribing to its output.
                 pub fn $ctor(
-                    child: ::gpui::Entity<$screen>,
-                    cx: &mut ::gpui::Context<Self>,
+                    child: $crate::gpui::Entity<$screen>,
+                    cx: &mut $crate::gpui::Context<Self>,
                 ) -> Self {
                     let mapper = $mapper;
                     let _subscription = cx.subscribe(&child, move |_this, _child, event: &$child_output, cx| {
@@ -63,18 +63,18 @@ macro_rules! define_route_host {
             )*
         }
 
-        impl ::gpui::EventEmitter<$output_type> for $host_name {}
+        impl $crate::gpui::EventEmitter<$output_type> for $host_name {}
 
-        impl ::gpui::Render for $host_name {
+        impl $crate::gpui::Render for $host_name {
             fn render(
                 &mut self,
-                _window: &mut ::gpui::Window,
-                _cx: &mut ::gpui::Context<Self>,
-            ) -> impl ::gpui::IntoElement {
+                _window: &mut $crate::gpui::Window,
+                _cx: &mut $crate::gpui::Context<Self>,
+            ) -> impl $crate::gpui::IntoElement {
                 match self {
                     $(
                         Self::$variant { entity, .. } => {
-                            ::gpui::IntoElement::into_any_element(entity.clone())
+                            $crate::gpui::IntoElement::into_any_element(entity.clone())
                         }
                     )*
                 }
@@ -82,7 +82,7 @@ macro_rules! define_route_host {
         }
 
         impl $crate::focus::NavFocusable for $host_name {
-            fn focus_handle(&self, cx: &::gpui::App) -> ::std::option::Option<::gpui::FocusHandle> {
+            fn focus_handle(&self, cx: &$crate::gpui::App) -> ::std::option::Option<$crate::gpui::FocusHandle> {
                 match self {
                     $(
                         Self::$variant { entity, .. } => {
