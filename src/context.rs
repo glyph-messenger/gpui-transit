@@ -1,6 +1,6 @@
 //! Unified navigation context combining Window and GPUI Context.
 
-use gpui_kit::{App, Context, Window};
+use gpui::{App, Context, Window};
 
 /// Unified navigation context wrapper providing ergonomic access to both the active `Window`
 /// and the GPUI `Context<'c, P>` or `App`.

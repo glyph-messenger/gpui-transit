@@ -3,7 +3,7 @@
 
 use std::any::Any;
 use std::sync::Arc;
-use gpui_kit::App;
+use gpui::App;
 
 /// The decision produced by a navigation guard.
 pub enum GuardDecision {

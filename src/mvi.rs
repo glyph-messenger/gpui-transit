@@ -1,5 +1,5 @@
 use std::sync::mpsc;
-use gpui_kit::{App, ClickEvent, Context, Render, WeakEntity, Window};
+use gpui::{App, ClickEvent, Context, Render, WeakEntity, Window};
 
 /// Trait for an MVI (Model-View-Intent) component.
 ///

@@ -1,5 +1,5 @@
-use gpui_kit::prelude::*;
-use gpui_kit::{Context, IntoElement, Render, Window, WindowOptions, div};
+use gpui::prelude::*;
+use gpui::{Context, IntoElement, Render, Window, WindowOptions, div};
 use gpui_transit::{NavigationFlow, NavigationNode, StackNavigator};
 
 #[derive(Clone, PartialEq, Eq, Hash, Debug)]
@@ -26,7 +26,7 @@ impl Render for RootHost {
 
 #[test]
 fn test_navigation_tree_node_bubbling() {
-    gpui_kit::application().run(|cx| {
+    gpui::application().run(|cx| {
         let _ = cx.open_window(WindowOptions::default(), |window, cx| {
             let parent = cx.new(|_| RootHost);
             parent.update(cx, |_host, cx| {

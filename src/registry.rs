@@ -5,7 +5,7 @@
 
 use std::any::{Any, TypeId};
 use std::collections::HashMap;
-use gpui_kit::{AnyElement, App, IntoElement, Window, div};
+use gpui::{AnyElement, App, IntoElement, Window, div};
 
 use crate::route::RouteConfig;
 

@@ -1,5 +1,5 @@
-use gpui_kit::prelude::*;
-use gpui_kit::{
+use gpui::prelude::*;
+use gpui::{
     AnyElement, App, ClickEvent, Context, Entity, EventEmitter, IntoElement,
     ParentElement, Pixels, Render, Styled, Window, div, rgba,
 };

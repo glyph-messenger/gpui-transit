@@ -1,8 +1,8 @@
 use std::num::NonZeroUsize;
 use lru::LruCache;
 
-use gpui_kit::prelude::*;
-use gpui_kit::{AnyElement, App, Context, Entity, EventEmitter, IntoElement, Render, Window, div};
+use gpui::prelude::*;
+use gpui::{AnyElement, App, Context, Entity, EventEmitter, IntoElement, Render, Window, div};
 
 use crate::focus::NavFocusable;
 use crate::lifecycle::ScreenLifecycle;

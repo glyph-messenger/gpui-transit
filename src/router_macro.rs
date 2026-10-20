@@ -4,8 +4,8 @@
 ///
 /// Automatically implements:
 /// - Screen constructors that subscribe to child output events and forward them via `cx.emit(...)`.
-/// - `gpui_kit::Render`, delegating directly into `.into_any_element()`.
-/// - `gpui_kit::EventEmitter<UnifiedOutput>`.
+/// - `gpui::Render`, delegating directly into `.into_any_element()`.
+/// - `gpui::EventEmitter<UnifiedOutput>`.
 /// - `NavFocusable`, delegating focus to the active screen.
 ///
 /// # Example
@@ -35,8 +35,8 @@ macro_rules! define_route_host {
         $vis enum $host_name {
             $(
                 $variant {
-                    entity: ::gpui_kit::Entity<$screen>,
-                    _subscription: ::gpui_kit::Subscription,
+                    entity: ::gpui::Entity<$screen>,
+                    _subscription: ::gpui::Subscription,
                 },
             )*
         }
@@ -46,8 +46,8 @@ macro_rules! define_route_host {
             $(
                 /// Creates a new variant embedding the child screen and subscribing to its output.
                 pub fn $ctor(
-                    child: ::gpui_kit::Entity<$screen>,
-                    cx: &mut ::gpui_kit::Context<Self>,
+                    child: ::gpui::Entity<$screen>,
+                    cx: &mut ::gpui::Context<Self>,
                 ) -> Self {
                     let mapper = $mapper;
                     let _subscription = cx.subscribe(&child, move |_this, _child, event: &$child_output, cx| {
@@ -63,18 +63,18 @@ macro_rules! define_route_host {
             )*
         }
 
-        impl ::gpui_kit::EventEmitter<$output_type> for $host_name {}
+        impl ::gpui::EventEmitter<$output_type> for $host_name {}
 
-        impl ::gpui_kit::Render for $host_name {
+        impl ::gpui::Render for $host_name {
             fn render(
                 &mut self,
-                _window: &mut ::gpui_kit::Window,
-                _cx: &mut ::gpui_kit::Context<Self>,
-            ) -> impl ::gpui_kit::IntoElement {
+                _window: &mut ::gpui::Window,
+                _cx: &mut ::gpui::Context<Self>,
+            ) -> impl ::gpui::IntoElement {
                 match self {
                     $(
                         Self::$variant { entity, .. } => {
-                            ::gpui_kit::IntoElement::into_any_element(entity.clone())
+                            ::gpui::IntoElement::into_any_element(entity.clone())
                         }
                     )*
                 }
@@ -82,7 +82,7 @@ macro_rules! define_route_host {
         }
 
         impl $crate::focus::NavFocusable for $host_name {
-            fn focus_handle(&self, cx: &::gpui_kit::App) -> ::std::option::Option<::gpui_kit::FocusHandle> {
+            fn focus_handle(&self, cx: &::gpui::App) -> ::std::option::Option<::gpui::FocusHandle> {
                 match self {
                     $(
                         Self::$variant { entity, .. } => {

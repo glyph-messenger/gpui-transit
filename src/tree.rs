@@ -16,7 +16,7 @@
 //! 3. If that stack is at root, passes the back action to its parent.
 
 use std::sync::atomic::{AtomicUsize, Ordering};
-use gpui_kit::{App, Window};
+use gpui::{App, Window};
 
 static NEXT_NODE_ID: AtomicUsize = AtomicUsize::new(1);
 

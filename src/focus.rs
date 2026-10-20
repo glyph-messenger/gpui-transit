@@ -1,4 +1,4 @@
-use gpui_kit::{App, FocusHandle, Window};
+use gpui::{App, FocusHandle, Window};
 
 /// Trait for components that can participate in automatic navigation focus management.
 pub trait NavFocusable {

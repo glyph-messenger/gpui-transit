@@ -1,5 +1,5 @@
-use gpui_kit::prelude::*;
-use gpui_kit::{Context, EventEmitter, IntoElement, Render, Window, div};
+use gpui::prelude::*;
+use gpui::{Context, EventEmitter, IntoElement, Render, Window, div};
 use gpui_transit::StackNavigator;
 
 #[derive(Clone, PartialEq, Eq, Hash, Debug)]
@@ -33,7 +33,7 @@ impl Render for RootHost {
 
 #[test]
 fn test_stack_basic_logic() {
-    gpui_kit::application().run(|cx| {
+    gpui::application().run(|cx| {
         let parent = cx.new(|_| RootHost);
         parent.update(cx, |_host, cx| {
             let mut stack: StackNavigator<TestRoute, TestScreen> = StackNavigator::new_empty();

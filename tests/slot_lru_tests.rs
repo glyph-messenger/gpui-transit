@@ -1,5 +1,5 @@
-use gpui_kit::prelude::*;
-use gpui_kit::{Context, EventEmitter, IntoElement, Render, Window, div};
+use gpui::prelude::*;
+use gpui::{Context, EventEmitter, IntoElement, Render, Window, div};
 use gpui_transit::SlotNavigator;
 
 #[derive(Clone, PartialEq, Eq, Hash, Debug)]
@@ -30,7 +30,7 @@ impl Render for RootHost {
 
 #[test]
 fn test_slot_navigator_lru_caching_and_lifecycle() {
-    gpui_kit::application().run(|cx| {
+    gpui::application().run(|cx| {
         let parent = cx.new(|_| RootHost);
         parent.update(cx, |_host, cx| {
             // LRU capacity = 2 cached screens

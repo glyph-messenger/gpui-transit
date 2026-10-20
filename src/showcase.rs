@@ -10,8 +10,8 @@
 //!   2. `StackNavigator` with `define_route_host!` for the inspector column.
 //!   3. `OverlayNavigator` for modal dialogs with focus trapping and backdrop dismissal.
 
-use gpui_kit::prelude::*;
-use gpui_kit::{
+use gpui::prelude::*;
+use gpui::{
     App, ClickEvent, Context, Entity, EventEmitter, FocusHandle, IntoElement, ParentElement,
     Render, Styled, Window, div, px, rgb,
 };
@@ -143,7 +143,7 @@ impl Render for ChatListFeature {
             .p_3()
             .border_b_1()
             .border_color(rgb(0x2a2a2e))
-            .child(div().font_weight(gpui_kit::FontWeight::BOLD).child("Chats"))
+            .child(div().font_weight(gpui::FontWeight::BOLD).child("Chats"))
             .child(
                 div()
                     .id("settings-btn")
@@ -173,7 +173,7 @@ impl Render for ChatListFeature {
                     .hover(|s| s.bg(if is_selected { rgb(0x2b5278) } else { rgb(0x25252a) }))
                     .on_click(dispatcher.on_click(ChatListIntent::Select(peer)))
                     .child(div().flex().items_center().justify_between().child(
-                        div().font_weight(gpui_kit::FontWeight::SEMIBOLD).child(chat.name.clone()),
+                        div().font_weight(gpui::FontWeight::SEMIBOLD).child(chat.name.clone()),
                     ))
                     .child(
                         div().text_sm().text_color(rgb(0x8a8a92)).child(chat.last_message.clone()),
@@ -286,7 +286,7 @@ impl Render for ChatRoomFeature {
             .bg(rgb(0x18181b))
             .child(
                 div()
-                    .font_weight(gpui_kit::FontWeight::BOLD)
+                    .font_weight(gpui::FontWeight::BOLD)
                     .child(format!("Chat: @{}", self.state.peer_id.0)),
             )
             .child(
@@ -427,8 +427,8 @@ impl Render for ProfileFeature {
             .bg(rgb(0x18181b))
             .text_color(rgb(0xffffff))
             .track_focus(&self.focus_handle)
-            .child(div().font_weight(gpui_kit::FontWeight::BOLD).text_lg().child("User Info"))
-            .child(div().font_weight(gpui_kit::FontWeight::SEMIBOLD).child(self.state.name.clone()))
+            .child(div().font_weight(gpui::FontWeight::BOLD).text_lg().child("User Info"))
+            .child(div().font_weight(gpui::FontWeight::SEMIBOLD).child(self.state.name.clone()))
             .child(div().text_sm().text_color(rgb(0x9ca3af)).child(self.state.bio.clone()))
             .child(
                 div()
@@ -526,7 +526,7 @@ impl Render for SharedMediaFeature {
                     .on_click(dispatcher.on_click(SharedMediaIntent::Back))
                     .child("← Back"),
             )
-            .child(div().font_weight(gpui_kit::FontWeight::BOLD).child("Shared Media"));
+            .child(div().font_weight(gpui::FontWeight::BOLD).child("Shared Media"));
 
         let mut items_box = div().flex().flex_col().gap_2().mt_3();
         for item in &self.state.items {
@@ -648,7 +648,7 @@ impl Render for SettingsModal {
                     .border_color(rgb(0x3f3f46))
                     .pb_3()
                     .child(
-                        div().text_lg().font_weight(gpui_kit::FontWeight::BOLD).child("Settings"),
+                        div().text_lg().font_weight(gpui::FontWeight::BOLD).child("Settings"),
                     )
                     .child(
                         div()
@@ -709,7 +709,7 @@ pub struct WorkspaceStore {
     overlay: OverlayNavigator<ModalRoute, SettingsModal>,
 
     // Subscriptions
-    _subscriptions: Vec<gpui_kit::Subscription>,
+    _subscriptions: Vec<gpui::Subscription>,
 }
 
 impl WorkspaceStore {

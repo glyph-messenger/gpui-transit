@@ -1,6 +1,6 @@
 //! Native GPUI Actions and keyboard shortcuts integration for navigation.
 
-use gpui_kit::actions;
+use gpui::actions;
 
 // Declare navigation actions using GPUI's action system
 actions!(

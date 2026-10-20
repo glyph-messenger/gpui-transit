@@ -2,7 +2,7 @@ use std::any::Any;
 use std::fmt::Debug;
 use std::hash::Hash;
 
-use gpui_kit::{Entity, FocusHandle, Subscription};
+use gpui::{Entity, FocusHandle, Subscription};
 
 use crate::lifecycle::ScreenLifecycle;
 use crate::result::AnyResultSender;

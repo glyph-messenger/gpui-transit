@@ -5,7 +5,7 @@
 //! - Resume operations and refresh data when popping back to the screen.
 //! - Cleanly release memory, flush drafts to disk, or tear down network streams when destroyed.
 
-use gpui_kit::Context;
+use gpui::Context;
 
 /// The presentation lifecycle state of a screen.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
