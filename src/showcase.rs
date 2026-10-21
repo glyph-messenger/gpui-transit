@@ -164,7 +164,7 @@ impl Render for ChatListFeature {
 
             list = list.child(
                 div()
-                    .id(format!("chat-item-{}", peer.0))
+                    .id(gpui::SharedString::from(format!("chat-item-{}", peer.0)))
                     .flex()
                     .flex_col()
                     .p_3()

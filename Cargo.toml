@@ -16,7 +16,7 @@ members = [
 ]
 
 [dependencies]
-gpui = { package = "gpui-pre", version = "0.3.9" }
+gpui = "0.2"
 lru = "0.18"
 tokio = { version = "1", features = ["sync"] }
 serde = { version = "1", features = ["derive"], optional = true }

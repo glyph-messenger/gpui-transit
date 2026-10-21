@@ -266,7 +266,7 @@ impl<C: RouteConfig, V: Render + 'static> SlotNavigator<C, V> {
         if let Some(active) = &self.active
             && let Some(handle) = active.entity.read(cx).focus_handle(cx)
         {
-            window.focus(&handle, cx);
+            window.focus(&handle);
             return true;
         }
         false
